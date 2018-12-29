@@ -1,0 +1,1 @@
+diff /tmp/ip.tmp /tmp/ip || (mv /tmp/ip.tmp /tmp/ip && ssh root@DNSIP1 "/root/update_ip.sh $(cat /tmp/ip)"))
