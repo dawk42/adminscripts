@@ -1,8 +1,8 @@
 #!/bin/bash
 ###############################################################################
 #  Name:        Derek Van Vuuren
-#  Date:        20190122
-#  Version:     1.0.1
+#  Date:        20190123
+#  Version:     1.0.2
 #  Description: service.sh allows for easy management for system services
 ###############################################################################
 service=$1
@@ -11,24 +11,27 @@ function menu
 {
        echo The current service is $service
       PS3='Please enter your choice: '
-      options=("Start" "Stop" "Restart" "Status" "Enable" "Quit")
+      options=("Start" "Stop" "Restart" "Status" "Enable" "Disable" "Quit")
       select opt in "${options[@]}"
       do
           case $opt in
               "Start")
-                  start
+                  startfcn
                 ;;
-              "Start")
-                  stop
+              "Stop")
+                  stopfcn
                     ;;
               "Restart")
-                  restart
+                  restartfcn
                   ;;
               "Status")
-                  status
+                  statusfcn
                   ;;
               "Enable")
-                  enable
+                  enablefcn
+                  ;;
+              "Disable")
+                  disablefcn
                   ;;
               "Quit")
                   echo "Bye!!!!"
@@ -40,36 +43,45 @@ function menu
 
   }
 
-  function start
+  function startfcn
   {
     systemctl start $service
+    systemctl status $service |grep Active:
     menu
   }
-  function stop
+  function stopfcn
   {
     systemctl stop $service
+    systemctl status $service |grep Active:
     menu
   }
-  function restart
+  function restartfcn
   {
     systemctl restart $service
+    systemctl status $service |grep Active:
     menu
   }
-  function status
+  function statusfcn
   {
     systemctl status $service
     menu
   }
-  function enable
+  function enablefcn
   {
     systemctl enable $service
+    systemctl status $service |grep Active:
     menu
   }
-
-  if [[ $EUID -ne 0 ]]; then
+  function disablefcn
+  {
+    systemctl disable $service
+    systemctl status $service |grep Active:
+    menu
+  }
+if [[ $EUID -ne 0 ]]; then
      echo "This script requires adminstrative privilages.
      Please run as root or an account with sudo."
      exit 1
   else
       menu
-  fi
+fi
