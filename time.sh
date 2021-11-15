@@ -57,7 +57,7 @@ if [ $(tail -1 $time_db |awk '{print $1}') == end ]; then
 	echo "Start Time $start_t recorded"
 	quit
 else
-	echo "Last entry is not an End time, please fix by entering an manual end time YYYYmmdd,HH:MM"
+	echo -e "Last entry is not an End time. \n Please fix by entering what time you ended. \nFormat: YYYYmmdd,HH:MM"
 	read -p "End Time: " man_ent
 	echo -e "end\t $man_ent" >> $time_db
 	time_ent start
@@ -72,7 +72,7 @@ if [ $(tail -1 $time_db |awk '{print $1}') == start ]; then
 	echo "Stop Time $end_t recorded"
 	quit
 else
-	echo "Last entry is not an Start time, please fix by entering an manual end time YYYYmmdd,HH:MM"
+	echo -e "Last entry is not a Start time. \n Please fix by entering what time you started. \nFormat: YYYYmmdd,HH:MM"
 	read -p "Start Time: " man_ent
 	echo -e "start\t $man_ent" >> $time_db
 	time_ent end
